@@ -1,5 +1,7 @@
 ##	согласно туториалу https://tutorial.djangogirls.org/ru/django_models/
 
+/home/ubuntu/projectPythonServer
+
 ##  пояснения
 
 python3.6 -m venv myvenv
@@ -7,7 +9,7 @@ python3.6 -m venv myvenv
 ##  запуск Вирт. окружения:
 . myvenv/bin/activate
 
-##	дальнейшие к-ды сделаны при помощи вирт. окружения
+##	дальнейшие к-ды сделаны при помощи вирт. окружения:
 --upgrade pip
 
 pip install Django==2.0
@@ -15,7 +17,7 @@ pip install Django==2.0
 ##  
 django-admin startproject mysite    
 
-##	добавляем в mysite/settings.py 	
+##	добавляем в mysite/settings.py: 	
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 ALLOWED_HOSTS = ['127.0.0.1', '<твоё_имя_пользователя>.pythonanywhere.com']
@@ -23,26 +25,26 @@ ALLOWED_HOSTS = ['127.0.0.1', '<твоё_имя_пользователя>.python
 #	
 python manage.py migrate
 
-#	запускаем сервер
+#	запускаем сервер:
 python manage.py runserver
 
 #	Для аккуратности мы создадим отдельное приложение в нашем проекте (в исх. тексте myapp = blog)
 python manage.py startapp myapp
 
-# в файле  в mysite/settings.py INSTALLED_APPS добавляем 
+#	в файле  в mysite/settings.py INSTALLED_APPS добавляем: 
 'myapp',
 
-#меняем файл myapp/models.py, описываем класс, отвечающий за отобр. в БД
-#Подробно о полях можно узнать в: 
-#https://docs.djangoproject.com/en/1.11/ref/models/fields/#field-types
+#	меняем файл myapp/models.py, описываем класс, отвечающий за отобр. в БД
+#	Подробно о полях можно узнать в: 
+#	https://docs.djangoproject.com/en/1.11/ref/models/fields/#field-types
 
-#добавление нашей модели в базу данных в консоли (env):
+#	добавление нашей модели в базу данных в консоли (env):
 python manage.py makemigrations myapp
 
 python manage.py migrate myapp
 
 
-#Создали проект и залили на GIT:
+#	Создали проект и залили на GIT:
 git init
 git add .
 git commit -m "Init"
@@ -53,8 +55,88 @@ git remote add origin https://github.com/villelouis/pythonServer.git
 git push -u origin master 
 
 
-#Обновляем
+#	Обновляем:
 git add .
 git status
+git commit
 git push
 git push --tags
+
+#	Редактируем:
+myapp/admin.py
+
+#	создаём суперпользователя:
+python manage.py createsuperuser
+
+user : admin
+password : 21543booob
+
+#	заходим в панель администратора:  
+http://127.0.0.1:8000/admin/
+
+#	пропустили гайд по деплоингу сайта
+
+#	URL-адреса Django
+#	Редактируем mysite/urls.py
+# 	перенаправили запросы с него к myapp/urls.py
+
+#	Создали новый пустой файл myapp/urls.py
+
+
+#	Редактируем myapp/views.py
+
+#	Django ORM и QuerySet
+
+#	Запуск интерактивной консоли:
+python manage.py shell
+
+
+#	Запрос к базе:
+from myapp.models import Post
+Post.objects.all()
+#Результат <QuerySet []>
+
+#	Создание записи в Post. Но т.к. Post ссылается на объект me класса User, то
+#	подключим этот класс и добавим к нему запись me:
+Post.objects.create(author=me, title='Sample title', text='Test')
+
+from django.contrib.auth.models import User
+User.objects.all()
+#	Результат <QuerySet [<User: admin>]>
+
+me = User.objects.get(username='admin')
+
+#	Фильтры:
+Post.objects.filter(author=me)
+
+#	обрати внимание на два символа нижнего подчёркивания
+#	Django ORM использует этот синтаксис для разделения 
+#	имён полей ("title") и операций или фильтров ("contains").
+Post.objects.filter(title__contains='title')
+
+#	Публикуем пост:
+post = Post.objects.get(title="Sample title")
+post.publish()
+
+#	список всех опубликованных сообщений
+from django.utils import timezone
+Post.objects.filter(published_date__lte=timezone.now())
+
+#	Сортировка объектов
+Post.objects.order_by('created_date')
+#	или 
+Post.objects.order_by('-created_date')
+
+#	Соединение QuerySets:
+Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+
+#	Редактируем myapp/views.py
+from .models import Post
+
+#	добавляем 
+posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+
+#	консоль : 
+#	Фиксируем изменения в БД
+python manage.py makemigrations myapp
+python manage.py migrate myapp

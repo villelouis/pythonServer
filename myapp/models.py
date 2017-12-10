@@ -3,36 +3,36 @@ from django.utils import timezone
 
 #	class Post(models.Model): — эта строка определяет нашу модель (объект).
 #	models.Model означает, что объект Post является моделью Django
-class Post(models.Model):
+# class Post(models.Model):
 
     # models.CharField — так мы определяем текстовое поле с ограничением на количество символов.
     # models.TextField — так определяется поле для неограниченно длинного текста. Выглядит подходящим для содержимого поста, верно?
     # models.DateTimeField — дата и время.
     # models.ForeignKey — ссылка на другую модель.
 
-    author = models.ForeignKey('auth.User',
-    	 on_delete=models.CASCADE,
-    	)
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    created_date = models.DateTimeField(
-            default=timezone.now)
-    published_date = models.DateTimeField(
-            blank=True, null=True)
+    # author = models.ForeignKey('auth.User',
+    # 	 on_delete=models.CASCADE,
+    # 	)
+    # title = models.CharField(max_length=200)
+    # text = models.TextField()
+    # created_date = models.DateTimeField(
+    #         default=timezone.now)
+    # published_date = models.DateTimeField(
+    #         blank=True, null=True)
 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+    # def publish(self):
+    #     self.published_date = timezone.now()
+    #     self.save()
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
 # Create your models here.
 class Users(models.Model):
-	login	 	= models.CharField(max_length = 100, unique = True)
-	password	= models.CharField(max_length = 100)
-	money		= models.CharField(max_length = 100)
-	sertificate	= models.CharField(max_length = 500)
+	login = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+	password = models.CharField(max_length=100)
+	money = models.CharField(max_length=100)
+	sertificate	= models.CharField(max_length=500)
 	
 class Devices(models.Model):
-	phone_num	= models.CharField(max_length = 100, unique = True)
-	user		= models.ForeignKey(Users, on_delete = models.CASCADE)
+	phone_num = models.CharField(max_length = 100, unique = True)
+	user = models.ForeignKey(Users, on_delete = models.CASCADE)
