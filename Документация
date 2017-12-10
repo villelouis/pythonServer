@@ -1,0 +1,40 @@
+##	согласно туториалу https://tutorial.djangogirls.org/ru/django_models/
+
+##  пояснения
+
+python3.6 -m venv myvenv
+
+##  запуск Вирт. окружения:
+. myvenv/bin/activate
+
+##	дальнейшие к-ды сделаны при помощи вирт. окружения
+--upgrade pip
+
+pip install Django==2.0
+
+##  
+django-admin startproject mysite    
+
+##	добавляем в mysite/settings.py 	
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+ALLOWED_HOSTS = ['127.0.0.1', '<твоё_имя_пользователя>.pythonanywhere.com']
+
+#	
+python manage.py migrate
+
+#	запускаем сервер
+python manage.py runserver
+
+#	Для аккуратности мы создадим отдельное приложение в нашем проекте (в исх. тексте myapp = blog)
+python manage.py startapp myapp
+
+# в файле  в mysite/settings.py INSTALLED_APPS добавляем 
+'myapp',
+
+#меняем файл myapp/models.py, описываем класс, отвечающий за отобр. в БД
+#Подробно о полях можно узнать в: 
+#https://docs.djangoproject.com/en/1.11/ref/models/fields/#field-types
+
+#добавление нашей модели в базу данных в консоли (env):
+python manage.py makemigrations myapp
