@@ -38,3 +38,23 @@ python manage.py startapp myapp
 
 #добавление нашей модели в базу данных в консоли (env):
 python manage.py makemigrations myapp
+
+python manage.py migrate myapp
+
+
+#Создали проект и залили на GIT:
+git init
+git add .
+git commit -m "Init"
+
+git tag v1.0
+
+git remote add origin https://github.com/villelouis/pythonServer.git
+git push -u origin master 
+
+
+#Обновляем
+git add .
+git status
+git push
+git push --tags

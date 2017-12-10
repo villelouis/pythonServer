@@ -27,3 +27,12 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 # Create your models here.
+class Users(models.Model):
+	login	 	= models.CharField(max_length = 100, unique = True)
+	password	= models.CharField(max_length = 100)
+	money		= models.CharField(max_length = 100)
+	sertificate	= models.CharField(max_length = 500)
+	
+class Devices(models.Model):
+	phone_num	= models.CharField(max_length = 100, unique = True)
+	user		= models.ForeignKey(Users, on_delete = models.CASCADE)
