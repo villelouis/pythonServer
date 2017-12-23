@@ -1,0 +1,88 @@
+
+#	Создали проект и залили на GIT:
+git init
+git add .
+git commit -m "Init"
+
+git tag v1.0
+
+git remote add origin https://github.com/villelouis/pythonServer.git
+git push -u origin master 
+
+
+#	Обновляем:
+git add .
+git status
+git commit
+git push
+git push --tags
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+экземпляр класса LoginManager
+login_user
+ser_loader
+login_user(user, remember=remember_me)
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(somewhere)
+1	Определить механизм хранения и создать набор пользователей, 
+каждый из которых будет иметь уникальный ID.
+2	Написать функцию с декоратором user_loader которая будет ставить 
+в соответствие ID конкретный объект пользователя.
+3	Установить декоратор login_required для представлений которые 
+требуют авторизации.
+4	Для авторизации добавить представление, которое будет вызывать 
+функцию login_user с объектом пользователя если данные для авторизации будут верны.
+5	Добавить представление, для реализации выхода пользователя, 
+которое будет вызывать функцию logout_user.
+
+===================================================
+
+
+
+from models import User
+User.query.all()
+	[<User 'Maxim'>, <User 'alexander'>, <User 'OlegErmakov'>]
+User.query.filter_by(username='Maxim').first()
+	<User 'Maxim'>
+m = User.query.filter_by(username='Maxim').first()
+m.phone
+	'79050203259'
+m.password_hash
+	'21543booob'
+
+=====================================================
+
+from database import init_db
+init_db()
+
+from database import db_session
+from models import User
+u = User('villelouis', '21543booob','79050203259')
+ 
+db_session.add(u)
+db_session.commit()
+
+
+
+User.query.all()
+
+	<User u'admin'>]
+
+User.query.filter(User.username == "villelouis2").first()
+
+	<User u'admin'>
+
+db.session.delete(m)
+db.session.commit(m)
+
+
+	User('villelouis', '21543booob','79050203259')
+	User('alexander','password','79688097787')
